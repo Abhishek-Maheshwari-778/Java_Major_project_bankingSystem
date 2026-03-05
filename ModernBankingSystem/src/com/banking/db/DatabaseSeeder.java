@@ -11,7 +11,7 @@ public class DatabaseSeeder {
         List<User> users = DataStore.getUsers();
         if (users.isEmpty()) {
             Timestamp now = new Timestamp(System.currentTimeMillis());
-            users.add(new User(1, "admin", "admin123", "ADMIN", "System Admin", "admin@bank.com", "", "", now));
+            users.add(new User(1, "admin", "admin123", "SUPER_ADMIN", "System Admin", "admin@bank.com", "", "", now, null));
             users.add(new User(2, "emp01", "emp123", "EMPLOYEE", "John Teller", "john@bank.com", "", "", now));
             users.add(new User(3, "user01", "pass123", "CUSTOMER", "Alice Smith", "alice@example.com", "", "", now));
             DataStore.saveUsers(users);

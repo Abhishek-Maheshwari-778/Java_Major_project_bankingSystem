@@ -44,18 +44,53 @@ public class AdminDashboard extends BaseFrame {
     protected JPanel createUserPanel() {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        String[] cols = {"ID", "User", "Role", "Name", "Email"};
+        String[] cols = {"ID", "User", "Role", "Name", "Email", "Created By"};
         DefaultTableModel m = new DefaultTableModel(cols, 0);
         JTable t = new JTable(m);
         for (String[] row : adminController.getAllUsers()) m.addRow(row);
         p.add(new JScrollPane(t), BorderLayout.CENTER);
+        JPanel actions = new JPanel();
+        JButton addEmp = new JButton("New Employee");
+        JButton addAdm = new JButton("New Admin");
         JButton del = new JButton("Delete User");
         styleButton(del);
+        styleButton(addEmp);
+        styleButton(addAdm);
+        actions.add(addEmp);
+        actions.add(addAdm);
+        actions.add(del);
         del.addActionListener(e -> {
             int r = t.getSelectedRow();
-            if (r != -1 && adminController.deleteUser(Integer.parseInt((String) m.getValueAt(r, 0)))) m.removeRow(r);
+            if (r != -1) {
+                String role = (String) m.getValueAt(r, 2);
+                if ("ADMIN".equalsIgnoreCase(role) || "SUPER_ADMIN".equalsIgnoreCase(role)) {
+                    JOptionPane.showMessageDialog(this, "Cannot delete admin accounts.", "Blocked", JOptionPane.WARNING_MESSAGE);
+                } else if (adminController.deleteUser(Integer.parseInt((String) m.getValueAt(r, 0)))) m.removeRow(r);
+            }
         });
-        p.add(del, BorderLayout.SOUTH);
+        addEmp.addActionListener(e -> {
+            String u = JOptionPane.showInputDialog(this, "Username:");
+            String ps = JOptionPane.showInputDialog(this, "Password:");
+            String n = JOptionPane.showInputDialog(this, "Full Name:");
+            String em = JOptionPane.showInputDialog(this, "Email:");
+            if (u != null && ps != null) {
+                int id = adminController.createUser(u, ps, "EMPLOYEE", n, em);
+                if (id > 0) { m.addRow(new String[]{String.valueOf(id), u, "EMPLOYEE", n, em, AuthController.getCurrentUser().getUsername()}); }
+                else JOptionPane.showMessageDialog(this, "Not allowed or failed.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        addAdm.addActionListener(e -> {
+            String u = JOptionPane.showInputDialog(this, "Admin Username:");
+            String ps = JOptionPane.showInputDialog(this, "Password:");
+            String n = JOptionPane.showInputDialog(this, "Full Name:");
+            String em = JOptionPane.showInputDialog(this, "Email:");
+            if (u != null && ps != null) {
+                int id = adminController.createUser(u, ps, "ADMIN", n, em);
+                if (id > 0) { m.addRow(new String[]{String.valueOf(id), u, "ADMIN", n, em, AuthController.getCurrentUser().getUsername()}); }
+                else JOptionPane.showMessageDialog(this, "Only SUPER_ADMIN can create ADMIN.", "Blocked", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+        p.add(actions, BorderLayout.SOUTH);
         return p;
     }
 

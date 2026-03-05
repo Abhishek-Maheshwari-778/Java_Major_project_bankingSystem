@@ -2,3 +2,7 @@
 [2026-03-05 19:24:39] [INFO] Login Failed: abhi
 [2026-03-05 20:06:27] [INFO] Login Successful: admin (ADMIN)
 [2026-03-05 20:06:55] [INFO] Logout: admin
+[2026-03-05 21:53:46] [INFO] Login Successful: admin (ADMIN)
+[2026-03-05 21:53:55] [INFO] Logout: admin
+[2026-03-05 21:55:15] [INFO] Login Successful: emp01 (EMPLOYEE)
+[2026-03-05 21:55:35] [INFO] Logout: emp01

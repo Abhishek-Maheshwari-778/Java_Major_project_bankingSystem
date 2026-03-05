@@ -24,11 +24,36 @@ where javaw >nul 2>&1
 if errorlevel 1 set "JAVA_CMD=java"
 where %JAVA_CMD% >nul 2>&1
 if errorlevel 1 (
-  echo.
-  echo ERROR: Java runtime not found in PATH. Please install Java 8+ and try again.
-  echo Visit https://adoptium.net/ for installers.
-  pause
-  exit /b 1
+  set "JAVA_CMD="
+  if defined JAVA_HOME (
+    if exist "%JAVA_HOME%\bin\javaw.exe" set "JAVA_CMD=%JAVA_HOME%\bin\javaw.exe"
+    if not defined JAVA_CMD if exist "%JAVA_HOME%\bin\java.exe" set "JAVA_CMD=%JAVA_HOME%\bin\java.exe"
+  )
+  if not defined JAVA_CMD (
+    for /d %%D in ("C:\Program Files\Java\jre*") do (
+      if exist "%%D\bin\javaw.exe" set "JAVA_CMD=%%D\bin\javaw.exe"
+      if not defined JAVA_CMD if exist "%%D\bin\java.exe" set "JAVA_CMD=%%D\bin\java.exe"
+    )
+  )
+  if not defined JAVA_CMD (
+    for /d %%D in ("C:\Program Files\Java\jdk*") do (
+      if exist "%%D\bin\javaw.exe" set "JAVA_CMD=%%D\bin\javaw.exe"
+      if not defined JAVA_CMD if exist "%%D\bin\java.exe" set "JAVA_CMD=%%D\bin\java.exe"
+    )
+  )
+  if not defined JAVA_CMD (
+    for /d %%D in ("C:\Program Files (x86)\Java\jre*") do (
+      if exist "%%D\bin\javaw.exe" set "JAVA_CMD=%%D\bin\javaw.exe"
+      if not defined JAVA_CMD if exist "%%D\bin\java.exe" set "JAVA_CMD=%%D\bin\java.exe"
+    )
+  )
+  if not defined JAVA_CMD (
+    echo.
+    echo ERROR: Java runtime not found. Install Java 8+ or set JAVA_HOME.
+    echo Example path: C:\Program Files\Java\jre1.8.0_xxx\bin
+    pause
+    exit /b 1
+  )
 )
 
 if "%DEV_MODE%"=="1" (

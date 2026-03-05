@@ -24,6 +24,8 @@ public class DatabaseSetup {
                     "address TEXT, " +
                     "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                     ");");
+            try { stmt.executeUpdate("ALTER TABLE users ADD COLUMN IF NOT EXISTS created_by INT NULL"); } catch (SQLException ignored) {}
+            try { stmt.executeUpdate("ALTER TABLE users ADD CONSTRAINT fk_users_created_by FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL"); } catch (SQLException ignored) {}
 
             // Accounts Table
             stmt.executeUpdate("CREATE TABLE IF NOT EXISTS accounts (" +

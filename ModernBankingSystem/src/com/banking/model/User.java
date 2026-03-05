@@ -8,12 +8,13 @@ public class User implements Serializable {
     private int id;
     private String username;
     private String password;
-    private String role; // ADMIN, EMPLOYEE, CUSTOMER
+    private String role;
     private String name;
     private String email;
     private String phone;
     private String address;
     private Timestamp createdAt;
+    private Integer createdBy;
 
     public User(int id, String username, String password, String role, String name, String email, String phone, String address, Timestamp createdAt) {
         this.id = id;
@@ -25,6 +26,11 @@ public class User implements Serializable {
         this.phone = phone;
         this.address = address;
         this.createdAt = createdAt;
+    }
+
+    public User(int id, String username, String password, String role, String name, String email, String phone, String address, Timestamp createdAt, Integer createdBy) {
+        this(id, username, password, role, name, email, phone, address, createdAt);
+        this.createdBy = createdBy;
     }
 
     public int getId() { return id; }
@@ -42,4 +48,6 @@ public class User implements Serializable {
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
     public Timestamp getCreatedAt() { return createdAt; }
+    public Integer getCreatedBy() { return createdBy; }
+    public void setCreatedBy(Integer createdBy) { this.createdBy = createdBy; }
 }
