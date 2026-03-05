@@ -2,6 +2,7 @@ package com.banking.view;
 
 import com.banking.controller.AuthController;
 import com.banking.db.DatabaseSeeder;
+import com.banking.db.DatabaseSetup;
 import com.banking.model.User;
 import javax.swing.*;
 import java.awt.*;
@@ -68,6 +69,7 @@ public class LoginScreen extends BaseFrame {
     }
 
     public static void main(String[] args) {
+        DatabaseSetup.setup();
         DatabaseSeeder.seed();
         SwingUtilities.invokeLater(() -> new LoginScreen().setVisible(true));
     }
