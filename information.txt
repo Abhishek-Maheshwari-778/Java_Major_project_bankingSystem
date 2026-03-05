@@ -1,0 +1,13 @@
+Default User Credentials:
+
+Admin:
+  Username: admin
+  Password: admin123
+
+Employee:
+  Username: emp01
+  Password: emp123
+
+Customer:
+  Username: user01
+  Password: pass123

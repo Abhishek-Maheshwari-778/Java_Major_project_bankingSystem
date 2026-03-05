@@ -89,8 +89,24 @@ public class CustomerDashboard extends BaseFrame {
         JTable t = new JTable(m);
         for (String[] row : loanController.getLoansByUser(AuthController.getCurrentUser().getId())) m.addRow(row);
         p.add(new JScrollPane(t), BorderLayout.CENTER);
-        JButton app = new JButton("Apply Loan"); styleButton(app);
-        app.addActionListener(e -> { String s = JOptionPane.showInputDialog("Amt:"); if (s != null && loanController.applyForLoan(AuthController.getCurrentUser().getId(), new BigDecimal(s), new BigDecimal("10.5"), 12)) JOptionPane.showMessageDialog(this, "Applied"); });
+        JButton app = new JButton("Apply for Loan");
+        styleButton(app);
+        app.addActionListener(e -> {
+            String amountStr = JOptionPane.showInputDialog(this, "Enter loan amount:");
+            if (amountStr != null && !amountStr.isEmpty()) {
+                try {
+                    BigDecimal amount = new BigDecimal(amountStr);
+                    // For simplicity, using fixed interest rate and term
+                    if (loanController.applyForLoan(AuthController.getCurrentUser().getId(), amount, new BigDecimal("8.5"), 36)) {
+                        JOptionPane.showMessageDialog(this, "Loan application submitted successfully!");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Loan application failed.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid amount entered.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
         p.add(app, BorderLayout.SOUTH);
         return p;
     }
