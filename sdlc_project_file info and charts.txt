@@ -1,0 +1,80 @@
+# SDLC Project File Information and Charts
+
+This document explains the Software Development Life Cycle (SDLC) followed for the Modern Banking System and provides a breakdown of the project file structure.
+
+## 1. SDLC Phases
+
+The project followed an **Iterative and Incremental** SDLC model.
+
+### Phase 1: Planning and Requirements Analysis
+- Identifying the core banking features: login, account management, transactions, and loans.
+- Determining the user roles: Admin, Employee, and Customer.
+- Setting the technical stack: Java, Swing, and MySQL.
+
+### Phase 2: System Design
+- Designing the database schema for scalability.
+- Architecting the MVC (Model-View-Controller) pattern to separate logic from UI.
+- Creating the `BaseFrame` to ensure a consistent GUI structure.
+
+### Phase 3: Implementation (Coding)
+- Developed the data persistence layer (`DataStore.java`).
+- Created the core business logic in Controllers.
+- Built the interactive UI screens.
+
+### Phase 4: Integration and Testing
+- Connecting the JDBC driver to MySQL.
+- Testing the end-to-end flows: user registration, logging in, transferring money, and applying for loans.
+- Verifying security features like PIN strike blocking.
+
+### Phase 5: Deployment and Documentation
+- Initializing the Git repository for version control.
+- Creating comprehensive README and instruction files.
+- Preparing the NSIS installer script for professional distribution.
+
+## 2. Project File Structure (Visual Tree)
+
+```text
+ModernBankingSystem/
+├── bin/                      # Compiled .class files
+├── data/                     # Local logs and temporary files
+├── lib/                      # External dependencies (MySQL Connector)
+├── src/                      # Source code directory
+│   └── com/banking/
+│       ├── Main.java         # Application entry point
+│       ├── controller/       # Business logic controllers
+│       │   ├── ATMController.java
+│       │   ├── AdminController.java
+│       │   ├── AuthController.java
+│       │   ├── BankingController.java
+│       │   ├── LoanController.java
+│       │   └── UserController.java
+│       ├── db/               # Database management and seeding
+│       │   ├── DataStore.java
+│       │   ├── DatabaseConnection.java
+│       │   ├── DatabaseSeeder.java
+│       │   └── DatabaseSetup.java
+│       ├── model/            # Data models (POJOs)
+│       │   ├── Account.java
+│       │   ├── Loan.java
+│       │   ├── Transaction.java
+│       │   └── User.java
+│       ├── util/             # Utility classes (Logger)
+│       │   └── Logger.java
+│       └── view/             # Swing-based GUI screens
+│           ├── ATMScreen.java
+│           ├── AdminDashboard.java
+│           ├── BaseFrame.java
+│           ├── CustomerDashboard.java
+│           ├── EmployeeDashboard.java
+│           └── LoginScreen.java
+├── installer.nsi             # NSIS Installer Script
+├── run.bat                   # Batch file to launch app
+└── README.md                 # Project overview
+```
+
+## 3. System Architecture Diagram (Conceptual)
+
+```text
+[ User Interface ] <---> [ Controllers ] <---> [ DataStore ] <---> [ MySQL Database ]
+(Swing Views)             (Logic/Rules)         (JDBC Layer)        (Persistent Storage)
+```

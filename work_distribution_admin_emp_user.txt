@@ -1,0 +1,40 @@
+# Work Distribution: Admin, Employee, and Customer
+
+This document describes the Role-Based Access Control (RBAC) and specific responsibilities of each user type in the Modern Banking System.
+
+## 1. Admin Role (Full Access)
+The Admin is responsible for the overall system maintenance and oversight.
+- **Responsibilities**:
+  - Managing users (viewing, deleting, and updating roles).
+  - Monitoring system statistics (total users, total bank balance, total transactions).
+  - Approving or rejecting loan applications.
+  - Viewing the transaction history of all accounts.
+
+## 2. Employee Role (Operational Access)
+Employees act as bank tellers and customer support.
+- **Responsibilities**:
+  - Onboarding new customers (creating customer accounts and initial bank accounts).
+  - Viewing the customer list to assist with account-related issues.
+  - Managing account statuses (activating or blocking accounts).
+  - **Constraint**: Employees cannot apply for loans or perform transfers on behalf of customers for security reasons.
+
+## 3. Customer Role (Personal Access)
+Customers can only access their own data and perform limited financial activities.
+- **Responsibilities**:
+  - Viewing their own account balances and account types.
+  - Transferring funds to other accounts (up to Rs. 50,000 limit).
+  - Applying for loans and viewing the status of their loan applications.
+  - Viewing their personal transaction history.
+  - Managing their profile (updating name, email, phone, etc.).
+
+## 4. Summary Table
+
+| Feature               | Admin | Employee | Customer |
+|-----------------------|-------|----------|----------|
+| Create User           | Yes   | Yes      | No       |
+| Delete User           | Yes   | No       | No       |
+| Approve Loan          | Yes   | No       | No       |
+| Apply Loan            | No    | No       | Yes      |
+| View All Transactions | Yes   | No       | No       |
+| View Personal Accs    | Yes   | Yes      | Yes      |
+| Transfer Funds        | No    | No       | Yes      |
