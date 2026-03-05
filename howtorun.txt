@@ -47,3 +47,9 @@ You can also create a professional installer for the Modern Banking System using
 - **Customer**:
   - Username: `user01`
   - Password: `pass123`
+
+## Default ATM Simulator Login
+
+- **Account Number**: `1000100`
+- **ATM PIN**: `1234`
+  (This account is linked to the user `user01`)

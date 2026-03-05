@@ -11,3 +11,8 @@ Employee:
 Customer:
   Username: user01
   Password: pass123
+
+Default ATM Simulator Login:
+  Account Number: 1000100
+  ATM PIN: 1234
+  (Linked to User: user01)
