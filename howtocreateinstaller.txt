@@ -1,0 +1,25 @@
+# How to Create the Modern Banking System Installer
+
+Follow these steps to create a professional installer for the Modern Banking System using NSIS.
+
+## 1. Install NSIS
+
+- Download and install **NSIS (Nullsoft Scriptable Install System)** from [https://nsis.sourceforge.io/Download](https://nsis.sourceforge.io/Download).
+
+## 2. Compile the Installer Script
+
+- Navigate to the `ModernBankingSystem` directory.
+- Locate the `installer.nsi` file.
+- Right-click `installer.nsi` and select **"Compile NSIS Script"**.
+- This will open the NSIS compiler and generate a `ModernBankingSystemInstaller.exe` file in the same directory.
+
+## 3. Distribute the Installer
+
+- You can now share `ModernBankingSystemInstaller.exe` with other users.
+- When they run the installer, it will install the application to `C:\Program Files\Modern Banking System` and create a desktop shortcut.
+
+## Notes
+
+- The installer includes the application's compiled classes, the MySQL JDBC driver, and a `run.bat` file to launch the application.
+- Ensure that the user has **Java 8 or higher** installed on their machine to run the application.
+- The installer also provides an uninstaller that can be accessed from the Start Menu or through the Windows Add/Remove Programs.

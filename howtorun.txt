@@ -32,6 +32,10 @@ java -cp "bin;ModernBankingSystem/lib/*" com.banking.Main
 
 The application window should now appear, starting with the login screen.
 
+## 4. Installer (Optional)
+
+You can also create a professional installer for the Modern Banking System using NSIS. For more information, please see the `howtocreateinstaller.txt` file in the root directory.
+
 ## Default User Credentials
 
 - **Admin**:
