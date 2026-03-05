@@ -75,7 +75,7 @@ Function .onInit
 FunctionEnd
 
 !define MUI_WELCOMEPAGE_TITLE "Modern Banking System"
-!define MUI_WELCOMEPAGE_TEXT "Java Major Project (BCA Final Year).$\r$\nSecure RBAC, ATM simulator, transfers, loans.$\r$\nTeam (5): Abhishek (Team Lead), Govind Gupta, Khushi Gupta, Pallal, Team Member 5.$\r$\nLive Repo: https://github.com/Govind-gupta243/modern-banking-system"
+!define MUI_WELCOMEPAGE_TEXT "Java Major Project (BCA Final Year).$\r$\nSecure RBAC, ATM simulator, transfers, loans.$\r$\nTeam (5): Abhishek (Team Lead), Govind Gupta, Khushi Gupta, Pallal, Team Member 5.$\r$\nLive Repo: https://github.com/Abhishek-Maheshwari-778/Java_Major_project_bankingSystem"
 
 Section "Install"
     ; Set output path to the installation directory

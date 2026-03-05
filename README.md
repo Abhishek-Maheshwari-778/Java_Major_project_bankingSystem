@@ -51,7 +51,7 @@ Default logins and detailed instructions are in `howtorun.txt`.
 - Java Major Project — BCA Final Year.
 - Built with Java Swing and MySQL using an MVC architecture with secure RBAC.
 - Team (5): Abhishek (Team Lead), Govind Gupta, Khushi Gupta, Pallal, Team Member 5.
-- Live Repository: https://github.com/OWNER/REPO
+- Live Repository: https://github.com/Abhishek-Maheshwari-778/Java_Major_project_bankingSystem
 
 ## Screenshots
 - Add screenshots to an assets/ directory and showcase the UI here.
