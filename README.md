@@ -1,4 +1,21 @@
-# Java Major Project: Banking System
+<div align="center">
+
+# Modern Banking System
+
+Java Major Project (BCA Final Year) — Secure, modern, and GUI‑driven banking.
+
+![Java](https://img.shields.io/badge/Java-8%2B-blue)
+![Swing](https://img.shields.io/badge/GUI-Java%20Swing-forestgreen)
+![Database](https://img.shields.io/badge/Database-MySQL-informational)
+![Installer](https://img.shields.io/badge/Installer-NSIS-brightgreen)
+![Platform](https://img.shields.io/badge/Platform-Windows-blueviolet)
+
+<br/>
+<!-- Optional demo GIF or screenshot -->
+<!-- Add your GIF at assets/demo.gif and uncomment the line below -->
+<!-- <img src="assets/demo.gif" alt="Demo" width="720" /> -->
+
+</div>
 
 A comprehensive Java-based banking system with MVC architecture, supporting Administrators, Employees, Customers, and ATM operations.
 
@@ -29,3 +46,21 @@ A comprehensive Java-based banking system with MVC architecture, supporting Admi
 - Run (Windows): `ModernBankingSystem\run.bat`
 
 Default logins and detailed instructions are in `howtorun.txt`.
+
+## About
+- Java Major Project — BCA Final Year.
+- Built with Java Swing and MySQL using an MVC architecture with secure RBAC.
+- Team (5): Abhishek (Team Lead), Govind Gupta, Khushi Gupta, Pallal, Team Member 5.
+- Live Repository: https://github.com/OWNER/REPO
+
+## Screenshots
+- Add screenshots to an assets/ directory and showcase the UI here.
+- Example:
+  - Login Screen
+  - Admin Dashboard
+  - ATM Simulator
+
+## Installer
+- Windows installer generated with NSIS.
+- Shortcuts launch the app without any console windows.
+- Java is auto‑detected at runtime; if not installed system‑wide, the app guides users accordingly.
