@@ -20,9 +20,11 @@ public class ATMScreen extends BaseFrame {
     }
 
     private void initUI() {
+        setLayout(new BorderLayout());
         cardPanel.add(createLoginPanel(), "LOGIN");
         cardPanel.add(createMenuPanel(), "MENU");
-        add(cardPanel);
+        add(cardPanel, BorderLayout.CENTER);
+        add(createHeader("ATM Simulator"), BorderLayout.NORTH);
     }
 
     private JPanel createLoginPanel() {
@@ -66,24 +68,52 @@ public class ATMScreen extends BaseFrame {
         exit.setBackground(ACCENT_COLOR);
         bal.addActionListener(e -> JOptionPane.showMessageDialog(this, "Balance: Rs. " + atmController.checkBalance()));
         with.addActionListener(e -> {
-            String s = JOptionPane.showInputDialog("Amount:");
-            if (s != null && atmController.withdrawCash(new BigDecimal(s))) JOptionPane.showMessageDialog(this, "Success");
-            else JOptionPane.showMessageDialog(this, "Failed");
+            String s = JOptionPane.showInputDialog(this, "Enter Amount to Withdraw:");
+            if (s != null && !s.isEmpty()) {
+                try {
+                    if (atmController.withdrawCash(new BigDecimal(s))) JOptionPane.showMessageDialog(this, "Withdrawal Successful!");
+                    else JOptionPane.showMessageDialog(this, "Withdrawal Failed: Insufficient funds or invalid amount.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Please enter a valid numeric amount.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
         dep.addActionListener(e -> {
-            String s = JOptionPane.showInputDialog("Amount:");
-            if (s != null && atmController.depositCash(new BigDecimal(s))) JOptionPane.showMessageDialog(this, "Success");
+            String s = JOptionPane.showInputDialog(this, "Enter Amount to Deposit:");
+            if (s != null && !s.isEmpty()) {
+                try {
+                    if (atmController.depositCash(new BigDecimal(s))) JOptionPane.showMessageDialog(this, "Deposit Successful!");
+                    else JOptionPane.showMessageDialog(this, "Deposit Failed.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Please enter a valid numeric amount.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
         mini.addActionListener(e -> {
             List<Transaction> txs = atmController.getMiniStatement();
-            StringBuilder sb = new StringBuilder("Mini Statement:\n");
-            for (int i = 0; i < Math.min(5, txs.size()); i++) sb.append(txs.get(i).getTimestamp()).append(" | ").append(txs.get(i).getType()).append(" | ").append(txs.get(i).getAmount()).append("\n");
-            JOptionPane.showMessageDialog(this, new JTextArea(sb.toString()));
+            if (txs.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No transactions found.");
+                return;
+            }
+            StringBuilder sb = new StringBuilder("Recent Transactions:\n\n");
+            for (int i = 0; i < Math.min(10, txs.size()); i++) {
+                Transaction tx = txs.get(i);
+                sb.append(String.format("%s | %-10s | Rs. %s\n", tx.getTimestamp(), tx.getType(), tx.getAmount()));
+            }
+            JTextArea area = new JTextArea(sb.toString());
+            area.setEditable(false);
+            area.setFont(new Font("Monospaced", Font.PLAIN, 12));
+            JOptionPane.showMessageDialog(this, new JScrollPane(area), "Mini Statement", JOptionPane.INFORMATION_MESSAGE);
         });
         pin.addActionListener(e -> {
-            String o = JOptionPane.showInputDialog("Old PIN:");
-            String n = JOptionPane.showInputDialog("New PIN:");
-            if (o != null && n != null && atmController.changePin(o, n)) JOptionPane.showMessageDialog(this, "Success");
+            String o = JOptionPane.showInputDialog(this, "Enter Old PIN:");
+            if (o != null) {
+                String n = JOptionPane.showInputDialog(this, "Enter New 4-Digit PIN:");
+                if (n != null) {
+                    if (atmController.changePin(o, n)) JOptionPane.showMessageDialog(this, "PIN Changed Successfully!");
+                    else JOptionPane.showMessageDialog(this, "Failed to change PIN. Ensure old PIN is correct and new PIN is 4 digits.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         });
         exit.addActionListener(e -> { atmController.logout(); dispose(); new LoginScreen().setVisible(true); });
         p.add(bal); p.add(with); p.add(dep); p.add(mini); p.add(pin); p.add(exit);

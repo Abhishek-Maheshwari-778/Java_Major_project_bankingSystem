@@ -31,6 +31,16 @@ public class DataStore {
         return users;
     }
 
+    public static boolean deleteUser(int userId) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return false;
+    }
+
     public static void saveUsers(List<User> users) {
         // This is a bulk sync - for SQL we'll use UPSERT or check existence
         for (User u : users) {

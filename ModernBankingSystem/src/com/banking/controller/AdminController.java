@@ -17,16 +17,9 @@ public class AdminController {
     }
 
     public boolean deleteUser(int userId) {
-        List<User> users = DataStore.getUsers();
-        if (users.removeIf(u -> u.getId() == userId)) {
-            DataStore.saveUsers(users);
-            List<Account> accounts = DataStore.getAccounts();
-            accounts.removeIf(a -> a.getUserId() == userId);
-            DataStore.saveAccounts(accounts);
-            Logger.info("User Deleted: " + userId);
-            return true;
-        }
-        return false;
+        boolean ok = DataStore.deleteUser(userId);
+        if (ok) Logger.info("User Deleted: " + userId);
+        return ok;
     }
 
     public boolean updateUserRole(int userId, String role) {
@@ -36,7 +29,12 @@ public class AdminController {
     }
 
     public int createUser(String user, String pass, String role, String name, String email) {
+        if (user == null || user.isEmpty() || pass == null || pass.isEmpty()) return -1;
         List<User> users = DataStore.getUsers();
+        for (User u : users) if (u.getUsername().equals(user)) {
+            Logger.warn("Create user failed: Username " + user + " already exists.");
+            return -1;
+        }
         int id = users.isEmpty() ? 1 : users.get(users.size() - 1).getId() + 1;
         users.add(new User(id, user, pass, role, name, email, "", "", new Timestamp(System.currentTimeMillis())));
         DataStore.saveUsers(users);
@@ -44,7 +42,12 @@ public class AdminController {
     }
 
     public boolean createAccount(int userId, String accNum, String pin) {
+        if (accNum == null || accNum.isEmpty() || pin == null || pin.length() != 4) return false;
         List<Account> accs = DataStore.getAccounts();
+        for (Account a : accs) if (a.getAccountNumber().equals(accNum)) {
+            Logger.warn("Create account failed: Account number " + accNum + " already exists.");
+            return false;
+        }
         int id = accs.isEmpty() ? 1 : accs.get(accs.size() - 1).getId() + 1;
         accs.add(new Account(id, userId, accNum, pin, BigDecimal.ZERO, "SAVINGS", "ACTIVE", new Timestamp(System.currentTimeMillis())));
         DataStore.saveAccounts(accs);

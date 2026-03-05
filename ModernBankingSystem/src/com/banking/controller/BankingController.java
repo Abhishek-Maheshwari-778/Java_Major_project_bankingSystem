@@ -16,6 +16,7 @@ public class BankingController {
     }
 
     public boolean deposit(int accId, BigDecimal amount, String desc) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) return false;
         List<Account> accounts = DataStore.getAccounts();
         for (Account acc : accounts) {
             if (acc.getId() == accId) {
@@ -30,6 +31,7 @@ public class BankingController {
     }
 
     public boolean withdraw(int accId, BigDecimal amount, String desc) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) return false;
         List<Account> accounts = DataStore.getAccounts();
         for (Account acc : accounts) {
             if (acc.getId() == accId) {
@@ -83,7 +85,9 @@ public class BankingController {
 
     private void recordTransaction(int accId, String type, BigDecimal amount, String desc, Integer targetId) {
         List<Transaction> txs = DataStore.getTransactions();
-        int nextId = txs.isEmpty() ? 1 : txs.get(txs.size() - 1).getId() + 1;
+        int maxId = 0;
+        for (Transaction t : txs) if (t.getId() > maxId) maxId = t.getId();
+        int nextId = maxId + 1;
         txs.add(new Transaction(nextId, accId, type, amount, desc, targetId, new Timestamp(System.currentTimeMillis())));
         DataStore.saveTransactions(txs);
     }
