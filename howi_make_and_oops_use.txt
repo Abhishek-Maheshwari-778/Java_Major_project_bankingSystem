@@ -1,0 +1,127 @@
+# OOP and Java Concepts in the Modern Banking System
+
+This document explains the core Object-Oriented Programming (OOP) principles and Java concepts that form the foundation of this project.
+
+## 1. Object-Oriented Programming (OOP) Principles
+
+### Encapsulation
+Encapsulation is the practice of bundling data (attributes) and the methods that operate on that data into a single unit, or "class." It restricts direct access to an object's components, which is a fundamental principle of data hiding.
+
+**Example (`Account.java`):**
+The `Account` class encapsulates all the data related to a bank account, such as `balance` and `status`. Direct modification of these fields is prevented. Instead, access is provided through public methods (`getBalance()`, `setBalance()`), ensuring that the internal state of the object is always valid.
+
+```java
+// In com.banking.model.Account.java
+public class Account implements Serializable {
+    private int id;
+    private BigDecimal balance;
+    private String status;
+
+    // Public getter for balance
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    // Public setter for balance ensures controlled modification
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+}
+```
+
+### Inheritance
+Inheritance is a mechanism where a new class (subclass) derives properties and behaviors from an existing class (superclass). This promotes code reuse and establishes a clear hierarchy.
+
+**Example (`BaseFrame.java`):**
+The `BaseFrame` class acts as a superclass for all dashboard views (`AdminDashboard`, `CustomerDashboard`, `EmployeeDashboard`). These subclasses inherit common functionalities like window setup, button styling, and sidebar creation, avoiding code duplication and ensuring a consistent look and feel across the application.
+
+```java
+// In com.banking.view.BaseFrame.java
+public abstract class BaseFrame extends JFrame { ... }
+
+// In com.banking.view.AdminDashboard.java
+public class AdminDashboard extends BaseFrame {
+    public AdminDashboard() {
+        super("Admin Dashboard"); // Calls the superclass constructor
+        // Inherits methods like createSidebar(), styleButton(), etc.
+    }
+}
+```
+
+### Abstraction
+Abstraction involves hiding complex implementation details and showing only the essential features of the object. In Java, this is achieved using abstract classes and interfaces.
+
+**Example (`BaseFrame.java`):**
+The `BaseFrame` is an `abstract` class. It defines a common structure and provides concrete methods (like `styleButton`) but leaves the specific UI initialization (`initUI`) to be implemented by its subclasses. This enforces a common structure while allowing for specialized implementations.
+
+## 2. Core Java Concepts and Design Patterns
+
+### Model-View-Controller (MVC) Architecture
+The entire project is built on the MVC pattern, which separates the application into three interconnected components:
+- **Model**: Represents the data and business logic (e.g., `User.java`, `Account.java`).
+- **View**: Manages the user interface and displays the data (e.g., `LoginScreen.java`, `AdminDashboard.java`).
+- **Controller**: Acts as an intermediary between the Model and the View, handling user input and updating the model (e.g., `AuthController.java`, `BankingController.java`).
+
+This separation makes the application more organized, easier to maintain, and scalable.
+
+### Java Database Connectivity (JDBC)
+JDBC is the Java API used to connect and execute queries on a database. The project uses JDBC to interact with the MySQL database, replacing the earlier file-based persistence system.
+
+**Example (`DatabaseConnection.java`):**
+This class is responsible for establishing a connection to the MySQL database using the JDBC driver.
+
+```java
+// In com.banking.db.DatabaseConnection.java
+public class DatabaseConnection {
+    private static final String URL = "jdbc:mysql://localhost:3306/modern_banking_db";
+    // ...
+    public static Connection getConnection() throws SQLException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection(URL, USER, PASS);
+    }
+}
+```
+
+### Java Swing for GUI
+Java Swing is the primary toolkit used for creating the graphical user interface (GUI) of the application. All visual components, from windows (`JFrame`) to buttons (`JButton`) and tables (`JTable`), are built using the Swing framework.
+
+**Example (`LoginScreen.java`):**
+This class uses Swing components to create the login interface.
+
+```java
+// In com.banking.view.LoginScreen.java
+public class LoginScreen extends BaseFrame {
+    private JTextField userField;
+    private JPasswordField passField;
+    // ...
+    private void initUI() {
+        // ...
+        userField = new JTextField(20);
+        passField = new JPasswordField(20);
+        JButton loginBtn = new JButton("LOGIN");
+        // ...
+    }
+}
+```
+
+### CardLayout for Navigation
+To create a smooth, single-window navigation experience, the `CardLayout` manager is used in the dashboards. It allows different panels (representing different screens) to be stacked on top of each other, with only one visible at a time.
+
+**Example (`AdminDashboard.java`):**
+The `AdminDashboard` uses a `CardLayout` to switch between the "Users," "Loans," and "Stats" panels without opening new windows.
+
+```java
+// In com.banking.view.AdminDashboard.java
+public class AdminDashboard extends BaseFrame {
+    private CardLayout cardLayout = new CardLayout();
+    private JPanel contentArea = new JPanel(cardLayout);
+    // ...
+    private void initUI() {
+        // ...
+        contentArea.add(createUserPanel(), "USERS");
+        contentArea.add(createLoanPanel(), "LOANS");
+        // ...
+        uBtn.addActionListener(e -> cardLayout.show(contentArea, "USERS"));
+    }
+}
+```

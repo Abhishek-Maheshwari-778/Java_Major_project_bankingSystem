@@ -1,0 +1,91 @@
+# Project Plan: Modern Banking System
+
+## 1. Project Requirements
+
+The primary goal was to evolve a legacy ATM simulator into a comprehensive Modern Banking System with a clean, maintainable, and secure architecture. Key requirements included:
+
+- **Role-Based Access Control (RBAC)**: Separate interfaces and permissions for Admin, Employee, and Customer roles.
+- **Modern User Interface**: A professional and consistent GUI using modern styling.
+- **Core Banking Features**: Support for deposits, withdrawals, transfers, loan applications, and transaction history.
+- **Data Persistence**: A shift from file-based storage to a robust MySQL database.
+- **Security**: Implementation of PIN validation, account blocking, and transaction limits.
+- **Code Quality**: Adherence to Object-Oriented Programming (OOP) principles and the Model-View-Controller (MVC) design pattern.
+
+## 2. Phased Development Approach
+
+The project was developed in a structured, phased manner:
+
+- **Phase 1: Foundation & MVC Setup**: Established the core project structure, including the initial models, views, and controllers.
+- **Phase 2: Core Business Logic**: Implemented the primary controllers for authentication, banking operations, and administration.
+- **Phase 3: GUI Development**: Focused on creating a modern UI with FlatLaf and a consistent sidebar navigation structure.
+- **Phase 4: Security Implementation**: Integrated key security features like PIN validation and account blocking.
+- **Phase 5: Initial Finalization**: Completed the file-based persistence model and pushed the first complete version to GitHub.
+- **Phase 6: MySQL Transition**: Migrated the persistence layer from file-based storage to a MySQL database using JDBC.
+- **Phase 7 & 8: Refactoring and Seeding**: Refactored the `DataStore` to work with JDBC and updated the database seeder.
+- **Phase 9: Final Verification**: Conducted end-to-end testing to ensure all components were working correctly with the new database.
+
+## 3. MySQL Database Schema
+
+The final database schema is designed to be relational and scalable.
+
+### `users` Table
+Stores user credentials and role information.
+```sql
+CREATE TABLE IF NOT EXISTS users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    role VARCHAR(20) NOT NULL, -- (ADMIN, EMPLOYEE, CUSTOMER)
+    name VARCHAR(100),
+    email VARCHAR(100),
+    phone VARCHAR(20),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### `accounts` Table
+Stores customer account details, linked to the `users` table.
+```sql
+CREATE TABLE IF NOT EXISTS accounts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    account_number VARCHAR(20) UNIQUE NOT NULL,
+    pin VARCHAR(4) NOT NULL,
+    balance DECIMAL(15, 2) DEFAULT 0.00,
+    account_type VARCHAR(20), -- (e.g., SAVINGS, CHECKING)
+    status VARCHAR(20) DEFAULT 'ACTIVE', -- (ACTIVE, BLOCKED)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```
+
+### `transactions` Table
+Logs all financial transactions, linked to the `accounts` table.
+```sql
+CREATE TABLE IF NOT EXISTS transactions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    account_id INT,
+    type VARCHAR(20), -- (DEPOSIT, WITHDRAW, TRANSFER)
+    amount DECIMAL(15, 2),
+    description TEXT,
+    target_account_id INT, -- For transfers
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
+);
+```
+
+### `loans` Table
+Manages loan applications and statuses, linked to the `users` table.
+```sql
+CREATE TABLE IF NOT EXISTS loans (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    amount DECIMAL(15, 2),
+    interest_rate DECIMAL(5, 2),
+    term_months INT,
+    status VARCHAR(20) DEFAULT 'PENDING', -- (PENDING, APPROVED, REJECTED, PAID)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```

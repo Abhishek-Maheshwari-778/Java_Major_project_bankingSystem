@@ -1,0 +1,9 @@
+# Project Requirements
+
+## Software
+- Java Development Kit (JDK) 8 or higher
+- MySQL Server 8.0 or higher
+
+## Dependencies
+- MySQL Connector/J (JDBC Driver)
+  - The `mysql-connector-j-8.0.33.jar` is included in the `lib/` directory.
