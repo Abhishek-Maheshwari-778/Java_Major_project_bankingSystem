@@ -77,12 +77,21 @@ public class AdminDashboard extends BaseFrame {
     }
 
     private JPanel createStatsPanel() {
-        JPanel p = new JPanel(new GridLayout(3, 1, 20, 20));
+        JPanel p = new JPanel(new GridLayout(4, 1, 20, 20));
         p.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
         String[] s = adminController.getStatistics();
         p.add(new JLabel("Total Users: " + s[0]));
         p.add(new JLabel("Total Bank Balance: Rs. " + s[1]));
         p.add(new JLabel("Total Transactions: " + s[2]));
+        
+        JButton intBtn = new JButton("Apply Monthly Interest (4% Savings)");
+        styleButton(intBtn);
+        intBtn.addActionListener(e -> {
+            new com.banking.controller.BankingController().applyInterest();
+            JOptionPane.showMessageDialog(this, "Monthly interest applied to all active savings accounts.");
+            cardLayout.show(contentArea, "STATS"); // Refresh
+        });
+        p.add(intBtn);
         return p;
     }
 }

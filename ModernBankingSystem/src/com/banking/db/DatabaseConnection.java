@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/modern_banking_db";
+    private static final String DB_NAME = "modern_banking_db";
+    private static final String URL = "jdbc:mysql://localhost:3306/" + DB_NAME + "?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
     private static final String PASS = "123456";
 
@@ -24,6 +25,6 @@ public class DatabaseConnection {
         } catch (ClassNotFoundException e) {
             System.err.println("MySQL JDBC Driver not found!");
         }
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/", USER, PASS);
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/?useSSL=false&allowPublicKeyRetrieval=true", USER, PASS);
     }
 }

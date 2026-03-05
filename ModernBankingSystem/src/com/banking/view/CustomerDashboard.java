@@ -114,10 +114,35 @@ public class CustomerDashboard extends BaseFrame {
     private JPanel createHistoryPanel() {
         JPanel p = new JPanel(new BorderLayout());
         p.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        DefaultTableModel m = new DefaultTableModel(new String[]{"Date", "Type", "Amt", "Desc"}, 0);
+        
+        // Advanced: Search Filter
+        JPanel filterP = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JTextField searchF = new JTextField(15);
+        JButton searchB = new JButton("Search History");
+        styleButton(searchB);
+        filterP.add(new JLabel("Search: ")); filterP.add(searchF); filterP.add(searchB);
+        p.add(filterP, BorderLayout.NORTH);
+
+        String[] cols = {"Date", "Type", "Amt", "Desc"};
+        DefaultTableModel m = new DefaultTableModel(cols, 0);
         JTable t = new JTable(m);
-        List<Account> accs = bankingController.getAccountsByUserId(AuthController.getCurrentUser().getId());
-        if (!accs.isEmpty()) for (Transaction tx : bankingController.getTransactionHistory(accs.get(0).getId())) m.addRow(new Object[]{tx.getTimestamp(), tx.getType(), tx.getAmount(), tx.getDescription()});
+        
+        Runnable loadData = () -> {
+            m.setRowCount(0);
+            List<Account> accs = bankingController.getAccountsByUserId(AuthController.getCurrentUser().getId());
+            if (!accs.isEmpty()) {
+                String term = searchF.getText().toLowerCase();
+                for (Transaction tx : bankingController.getTransactionHistory(accs.get(0).getId())) {
+                    if (term.isEmpty() || tx.getType().toLowerCase().contains(term) || tx.getDescription().toLowerCase().contains(term)) {
+                        m.addRow(new Object[]{tx.getTimestamp(), tx.getType(), tx.getAmount(), tx.getDescription()});
+                    }
+                }
+            }
+        };
+        
+        loadData.run();
+        searchB.addActionListener(e -> loadData.run());
+        
         p.add(new JScrollPane(t), BorderLayout.CENTER);
         return p;
     }

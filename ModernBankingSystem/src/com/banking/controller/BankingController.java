@@ -46,15 +46,39 @@ public class BankingController {
         return false;
     }
 
+    private static final BigDecimal DAILY_LIMIT = new BigDecimal("50000.00");
+
     public boolean transfer(int fromId, String toAccNum, BigDecimal amount, String desc) {
-        if (amount.compareTo(new BigDecimal("50000")) > 0) return false;
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) return false;
+        if (amount.compareTo(DAILY_LIMIT) > 0) {
+            Logger.warn("Transfer failed: Exceeds daily limit of " + DAILY_LIMIT);
+            return false;
+        }
+
         Account target = getAccountByNumber(toAccNum);
         if (target == null) return false;
+
         if (withdraw(fromId, amount, "Transfer to " + toAccNum + ": " + desc)) {
             deposit(target.getId(), amount, "Transfer from ID " + fromId);
+            Logger.info("Transfer: " + amount + " from ID " + fromId + " to " + toAccNum);
             return true;
         }
         return false;
+    }
+
+    public void applyInterest() {
+        List<Account> accounts = DataStore.getAccounts();
+        BigDecimal rate = new BigDecimal("0.04"); // 4% Annual
+        for (Account a : accounts) {
+            if ("SAVINGS".equals(a.getAccountType()) && "ACTIVE".equals(a.getStatus())) {
+                BigDecimal interest = a.getBalance().multiply(rate).divide(new BigDecimal("12"), 2, BigDecimal.ROUND_HALF_UP);
+                if (interest.compareTo(BigDecimal.ZERO) > 0) {
+                    a.setBalance(a.getBalance().add(interest));
+                    Logger.info("Interest applied to " + a.getAccountNumber() + ": " + interest);
+                }
+            }
+        }
+        DataStore.saveAccounts(accounts);
     }
 
     private void recordTransaction(int accId, String type, BigDecimal amount, String desc, Integer targetId) {

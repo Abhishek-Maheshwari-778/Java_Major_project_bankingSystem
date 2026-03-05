@@ -1,3 +1,3 @@
 @echo off
-java -cp "bin;lib/*" com.banking.Main
-pause
+start javaw -cp "bin;lib/*" com.banking.Main
+exit

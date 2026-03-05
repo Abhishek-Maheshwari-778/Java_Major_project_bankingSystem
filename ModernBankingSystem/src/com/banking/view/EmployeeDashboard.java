@@ -45,6 +45,31 @@ public class EmployeeDashboard extends BaseFrame {
 
     private JPanel createCustomerListPanel() {
         JPanel p = new AdminDashboard().createUserPanel(); // Reuse the user panel from AdminDashboard
+        
+        // Advanced: Account Status Management
+        JPanel manageP = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton blockBtn = new JButton("Block/Unblock Selected");
+        styleButton(blockBtn);
+        manageP.add(blockBtn);
+        
+        // Get the table from the panel (it's the first scroll pane's viewport's view)
+        JTable table = (JTable)((JScrollPane)p.getComponent(0)).getViewport().getView();
+        blockBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row != -1) {
+                int userId = Integer.parseInt((String) table.getValueAt(row, 0));
+                // Logic to toggle status of all accounts for this user
+                List<com.banking.model.Account> accs = new com.banking.controller.BankingController().getAccountsByUserId(userId);
+                for (com.banking.model.Account a : accs) {
+                    String newStatus = a.getStatus().equals("ACTIVE") ? "BLOCKED" : "ACTIVE";
+                    new com.banking.controller.BankingController().updateAccountStatus(a.getId(), newStatus);
+                }
+                JOptionPane.showMessageDialog(this, "Toggled account status for User ID: " + userId);
+            }
+        });
+        
+        p.add(manageP, BorderLayout.SOUTH);
+
         JButton backBtn = new JButton("Back to Dashboard");
         styleButton(backBtn);
         backBtn.addActionListener(e -> cardLayout.show(contentArea, "HOME"));

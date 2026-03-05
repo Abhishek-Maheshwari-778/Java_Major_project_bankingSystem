@@ -18,8 +18,9 @@ public class LoginScreen extends BaseFrame {
     }
 
     private void initUI() {
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
         getContentPane().setBackground(Color.WHITE);
+        
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         p.setBackground(Color.WHITE);
@@ -31,23 +32,24 @@ public class LoginScreen extends BaseFrame {
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         userField = new JTextField(20);
-        userField.setMaximumSize(new Dimension(300, 40));
+        userField.setMaximumSize(new Dimension(300, 45));
         userField.setBorder(BorderFactory.createTitledBorder("Username"));
 
         passField = new JPasswordField(20);
-        passField.setMaximumSize(new Dimension(300, 40));
+        passField.setMaximumSize(new Dimension(300, 45));
         passField.setBorder(BorderFactory.createTitledBorder("Password"));
 
         JButton loginBtn = new JButton("LOGIN");
         styleButton(loginBtn);
         loginBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        loginBtn.setMaximumSize(new Dimension(300, 45));
+        loginBtn.setMaximumSize(new Dimension(300, 50));
         loginBtn.addActionListener(e -> handleLogin());
 
         JButton atmBtn = new JButton("Open ATM Simulator");
         atmBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         atmBtn.setForeground(PRIMARY_COLOR);
         atmBtn.setContentAreaFilled(false);
+        atmBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         atmBtn.addActionListener(e -> { dispose(); new ATMScreen().setVisible(true); });
 
         p.add(logo); p.add(Box.createVerticalStrut(30));
@@ -55,7 +57,9 @@ public class LoginScreen extends BaseFrame {
         p.add(passField); p.add(Box.createVerticalStrut(25));
         p.add(loginBtn); p.add(Box.createVerticalStrut(15));
         p.add(atmBtn);
-        add(p);
+        
+        add(p, BorderLayout.CENTER);
+        add(createHeader("Welcome to Modern Banking"), BorderLayout.NORTH);
     }
 
     private void handleLogin() {

@@ -16,6 +16,8 @@ RequestExecutionLevel admin
 ; Modern UI
 !include "MUI2.nsh"
 !define MUI_ABORTWARNING
+!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
+!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 ; Pages
 !insertmacro MUI_PAGE_WELCOME
