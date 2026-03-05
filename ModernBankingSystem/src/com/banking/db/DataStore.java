@@ -15,6 +15,7 @@ public class DataStore {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
+                Integer createdBy = rs.getObject("created_by") == null ? null : rs.getInt("created_by");
                 users.add(new User(
                     rs.getInt("id"),
                     rs.getString("username"),
@@ -24,11 +25,22 @@ public class DataStore {
                     rs.getString("email"),
                     rs.getString("phone"),
                     rs.getString("address"),
-                    rs.getTimestamp("created_at")
+                    rs.getTimestamp("created_at"),
+                    createdBy
                 ));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return users;
+    }
+
+    public static boolean deleteUser(int userId) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return false;
     }
 
     public static void saveUsers(List<User> users) {
@@ -39,9 +51,9 @@ public class DataStore {
     }
 
     private static void saveUser(User u) {
-        String sql = "INSERT INTO users (id, username, password, role, name, email, phone, address, created_at) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                     "ON DUPLICATE KEY UPDATE password=?, role=?, name=?, email=?, phone=?, address=?";
+        String sql = "INSERT INTO users (id, username, password, role, name, email, phone, address, created_at, created_by) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                     "ON DUPLICATE KEY UPDATE password=?, role=?, name=?, email=?, phone=?, address=?, created_by=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, u.getId());
@@ -53,15 +65,43 @@ public class DataStore {
             pstmt.setString(7, u.getPhone());
             pstmt.setString(8, u.getAddress());
             pstmt.setTimestamp(9, u.getCreatedAt());
+            if (u.getCreatedBy() != null) pstmt.setInt(10, u.getCreatedBy()); else pstmt.setNull(10, Types.INTEGER);
             
-            pstmt.setString(10, u.getPassword());
-            pstmt.setString(11, u.getRole());
-            pstmt.setString(12, u.getName());
-            pstmt.setString(13, u.getEmail());
-            pstmt.setString(14, u.getPhone());
-            pstmt.setString(15, u.getAddress());
+            pstmt.setString(11, u.getPassword());
+            pstmt.setString(12, u.getRole());
+            pstmt.setString(13, u.getName());
+            pstmt.setString(14, u.getEmail());
+            pstmt.setString(15, u.getPhone());
+            pstmt.setString(16, u.getAddress());
+            if (u.getCreatedBy() != null) pstmt.setInt(17, u.getCreatedBy()); else pstmt.setNull(17, Types.INTEGER);
             pstmt.executeUpdate();
         } catch (SQLException e) { e.printStackTrace(); }
+    }
+    
+    public static User getUserById(int userId) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    Integer createdBy = rs.getObject("created_by") == null ? null : rs.getInt("created_by");
+                    return new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("role"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getTimestamp("created_at"),
+                        createdBy
+                    );
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
     }
 
     // ACCOUNTS

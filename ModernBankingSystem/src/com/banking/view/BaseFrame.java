@@ -61,13 +61,13 @@ public abstract class BaseFrame extends JFrame {
         p.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
         p.setBackground(Color.WHITE);
 
-        JLabel title = new JLabel("Modern Banking System v1.0");
+        JLabel title = new JLabel("Modern Banking System v1.0 — Java Major Project (BCA Final Year)");
         title.setFont(new Font("Segoe UI", Font.BOLD, 20));
         title.setForeground(PRIMARY_COLOR);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JTextArea desc = new JTextArea("A comprehensive banking application built with Java Swing and MySQL, " +
-                "featuring secure transactions, loan management, and role-based access control.");
+        JTextArea desc = new JTextArea("A comprehensive banking application built with Java Swing and MySQL.\n" +
+                "Features: RBAC (Super Admin/Admin/Employee/Customer), ATM simulator, transfers, loans.");
         desc.setWrapStyleWord(true);
         desc.setLineWrap(true);
         desc.setEditable(false);
@@ -75,18 +75,27 @@ public abstract class BaseFrame extends JFrame {
         desc.setAlignmentX(Component.CENTER_ALIGNMENT);
         desc.setMaximumSize(new Dimension(400, 80));
 
-        JLabel teamHeader = new JLabel("Team Members:");
+        JLabel teamHeader = new JLabel("Team & Links:");
         teamHeader.setFont(new Font("Segoe UI", Font.BOLD, 16));
         teamHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         String teamInfo = "<html><center>" +
-                "<b>Govind Gupta</b><br>GitHub: Govind-gupta243<br><br>" +
-                "<b>Khushi Gupta</b><br>GitHub: happycode290<br><br>" +
-                "<b>Pallal</b><br>GitHub: pallal" +
+                "<b>Abhishek</b> — Team Lead<br>" +
+                "<b>Govind Gupta</b> — GitHub: Govind-gupta243<br>" +
+                "<b>Khushi Gupta</b> — GitHub: happycode290<br>" +
+                "<b>Pallal</b> — GitHub: pallal<br>" +
+                "<b>Team Member 5</b><br><br>" +
+                "GitHub Live: <a href='https://github.com/Abhishek-Maheshwari-778/Java_Major_project_bankingSystem'>github.com/Abhishek-Maheshwari-778/Java_Major_project_bankingSystem</a>" +
                 "</center></html>";
         JLabel team = new JLabel(teamInfo);
         team.setFont(NORMAL_FONT);
         team.setAlignmentX(Component.CENTER_ALIGNMENT);
+        team.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        team.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                try { java.awt.Desktop.getDesktop().browse(new java.net.URI("https://github.com/Abhishek-Maheshwari-778/Java_Major_project_bankingSystem")); } catch (Exception ignored) {}
+            }
+        });
 
         JButton close = new JButton("Close");
         styleButton(close);

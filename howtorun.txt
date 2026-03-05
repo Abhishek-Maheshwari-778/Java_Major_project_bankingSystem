@@ -14,20 +14,34 @@ Follow these steps to compile and run the project on your local machine.
 
 ## 2. Compilation
 
-Open a terminal or command prompt in the root directory of the project (`ATM-Simulator-System-master (1)`) and run the following command to compile the Java source files. This command compiles the code to be compatible with Java 8 and places the `.class` files in the `bin` directory.
+Open a terminal or command prompt in the project root and compile into the module’s `ModernBankingSystem/bin` folder to keep the layout consistent with the installer and launcher.
 
-```bash
-javac -source 8 -target 8 -d bin -cp "ModernBankingSystem/lib/*;ModernBankingSystem/src" ModernBankingSystem/src/com/banking/Main.java ModernBankingSystem/src/com/banking/db/*.java ModernBankingSystem/src/com/banking/model/*.java ModernBankingSystem/src/com/banking/controller/*.java ModernBankingSystem/src/com/banking/view/*.java ModernBankingSystem/src/com/banking/util/*.java
+Windows (cmd.exe or PowerShell):
+
+```
+javac -source 8 -target 8 -d ModernBankingSystem\bin -cp "ModernBankingSystem\lib\*;ModernBankingSystem\src" ModernBankingSystem\src\com\banking\Main.java ModernBankingSystem\src\com\banking\db\*.java ModernBankingSystem\src\com\banking\model\*.java ModernBankingSystem\src\com\banking\controller\*.java ModernBankingSystem\src\com\banking\view\*.java ModernBankingSystem\src\com\banking\util\*.java
 ```
 
-**Note for Windows Users**: If you are using PowerShell, you might need to replace the semicolon (`;`) in the classpath with a comma (`,`) or ensure the path is correctly quoted.
+macOS/Linux (bash/zsh):
+
+```
+javac -source 8 -target 8 -d ModernBankingSystem/bin -cp "ModernBankingSystem/lib/*:ModernBankingSystem/src" ModernBankingSystem/src/com/banking/Main.java ModernBankingSystem/src/com/banking/db/*.java ModernBankingSystem/src/com/banking/model/*.java ModernBankingSystem/src/com/banking/controller/*.java ModernBankingSystem/src/com/banking/view/*.java ModernBankingSystem/src/com/banking/util/*.java
+```
 
 ## 3. Execution
 
-After successful compilation, run the following command from the same root directory to start the application. This command includes the compiled classes (`bin`) and the MySQL JDBC driver (`lib`) in the classpath.
+After successful compilation, run the application. On Windows, you can double‑click the launcher or use the command below.
 
-```bash
-java -cp "bin;ModernBankingSystem/lib/*" com.banking.Main
+Windows:
+
+```
+ModernBankingSystem\run.bat
+```
+
+macOS/Linux:
+
+```
+java -cp "ModernBankingSystem/bin:ModernBankingSystem/lib/*" com.banking.Main
 ```
 
 The application window should now appear, starting with the login screen.

@@ -1,9 +1,13 @@
 # Project Requirements
 
 ## Software
-- Java Development Kit (JDK) 8 or higher
-- MySQL Server 8.0 or higher
+- Java Runtime (JRE) or Development Kit (JDK) 8 or higher
+- MySQL Server 8.0 or higher (running on localhost)
 
 ## Dependencies
 - MySQL Connector/J (JDBC Driver)
-  - The `mysql-connector-j-8.0.33.jar` is included in the `lib/` directory.
+  - The `mysql-connector-j-8.0.33.jar` is included in the `ModernBankingSystem/lib/` directory.
+
+## Environment
+- Ensure `java` or `javaw` is available in PATH.
+- Default DB credentials are configured in `ModernBankingSystem/src/com/banking/db/DatabaseConnection.java`.
