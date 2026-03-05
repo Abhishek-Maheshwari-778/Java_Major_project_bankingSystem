@@ -1,0 +1,45 @@
+# How to Run the Modern Banking System
+
+Follow these steps to compile and run the project on your local machine.
+
+## 1. Prerequisites
+
+- **Java Development Kit (JDK)**: Ensure you have JDK 8 or a compatible version installed.
+- **MySQL Server**: Make sure MySQL Server is running.
+- **Database Credentials**: The application is configured to use the following default credentials for MySQL:
+  - **Username**: `root`
+  - **Password**: `123456`
+
+  The application will automatically create the database (`modern_banking_db`) and tables on the first run.
+
+## 2. Compilation
+
+Open a terminal or command prompt in the root directory of the project (`ATM-Simulator-System-master (1)`) and run the following command to compile the Java source files. This command compiles the code to be compatible with Java 8 and places the `.class` files in the `bin` directory.
+
+```bash
+javac -source 8 -target 8 -d bin -cp "ModernBankingSystem/lib/*;ModernBankingSystem/src" ModernBankingSystem/src/com/banking/Main.java ModernBankingSystem/src/com/banking/db/*.java ModernBankingSystem/src/com/banking/model/*.java ModernBankingSystem/src/com/banking/controller/*.java ModernBankingSystem/src/com/banking/view/*.java ModernBankingSystem/src/com/banking/util/*.java
+```
+
+**Note for Windows Users**: If you are using PowerShell, you might need to replace the semicolon (`;`) in the classpath with a comma (`,`) or ensure the path is correctly quoted.
+
+## 3. Execution
+
+After successful compilation, run the following command from the same root directory to start the application. This command includes the compiled classes (`bin`) and the MySQL JDBC driver (`lib`) in the classpath.
+
+```bash
+java -cp "bin;ModernBankingSystem/lib/*" com.banking.Main
+```
+
+The application window should now appear, starting with the login screen.
+
+## Default User Credentials
+
+- **Admin**:
+  - Username: `admin`
+  - Password: `admin123`
+- **Employee**:
+  - Username: `emp01`
+  - Password: `emp123`
+- **Customer**:
+  - Username: `user01`
+  - Password: `pass123`
